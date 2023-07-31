@@ -30,7 +30,16 @@ ex) 299? => 2xx (Successful) / 451? => 4xx (Client Error) 등
 
 # 03. 3xx - 리다이렉션1
 
+* 3xx (Redirection) : 요청을 완료하기 위해 유저 에이전트(클라이언트 프로그램 => 웹 브라우저)의 추가 조치 필요
+- 300 Multiple Choices (거의 안씀)
+- 301 Moved Permanently
+- 302 Found
+- 303 See Other
+- 304 Not Modified
+- 307 Temporary Redirect
+- 308 Permanent Redirect
 
+- 웹 브라우저는 3xx 응답의 결과에 Location 헤더가 있으면, Location 위치로 자동 이동 (리다이렉트)
 
 
 
