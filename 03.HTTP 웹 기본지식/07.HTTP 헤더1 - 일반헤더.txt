@@ -68,9 +68,72 @@
 
 # 03. 콘텐츠 협상
 
+* 협상 (콘텐츠 네고시에이션) - 클라이언트가 선호하는 표현 요청
+=> 서버가 클라이언트가 원하는 우선순위에 맞춰서 데이터를 만들어 주는것
+
+- Accept : 클라이언트가 선호하는 미디어 타입 전달
+- Accept-Charset : 클라이언트가 선호하는 문자 인코딩
+- Accept-Encoding : 클라이언트가 선호하는 압축 인코딩
+- Accept-Language : 클라이언트가 선호하는 자연 언어
+=> 협상 헤더는 요청시에만 사용
+
+* Accept-Language 예시
+
+1) Accept-Language 적용 전
+- 한국어 브라우저 사용 '/evnet'로 들어감 [GET /event]
+- 서버가 다중 언어 지원 서버: 기본 영어(en) / 한국어 지원(ko) [Content-Language: en]
+
+2) Accept-Language 적용 후
+- 한국어 브라우저 사용 '/evnet'로 들어감 [GET /event, Accept-Language: ko] => 클라이언트에서 서버 요청할때 선호 언어를 보냄
+- 서버가 다중 언어 지원 서버: 기본 영어(en) / 한국어 지원(ko) [Content-Language: ko]
+
+3) Accept-Language 복잡한 예시
+- 한국어 브라우저 사용 '/evnet'로 들어감 [GET /event, Accept-Language: ko] => 클라이언트에서 서버 요청할때 선호 언어를 보냄
+- 서버가 다중 언어 지원 서버: 기본 독일어(de) / 영어 지원(en) [Content-Language: de] => ko가 없으니까 기본언어 보냄
+
+해결방법 : 헤더에 우선순위를 같이 보냄 ex) [GET /event, Accept-Language: ko-KR,ko;q=0.9,en-Us;q=0.8,en;q=0.7] => en의 Quality values값이 0.7이니까 en을 보냄
+
+* 협상과 우선순위1 (Quality Values(q)) [GET /event, Accept-Language: ko-KR,ko;q=0.9,en-Us;q=0.8,en;q=0.7]
+- Quality Values(q) 값 사용
+- 0~1, 클수록 높은 우선순위
+- 생략하면 1
+-- 'Accept-Language: ko-KR,ko;q=0.9,en-Us;q=0.8,en;q=0.7'
+   - 1. ko-KR;q=1 (q 생략)
+   - 2. ko;q=0.9
+   - 3. en-US;q=0.8
+   - 4. en;q=0.7
+
+* 협상과 우선순위2 (Quality Values(q)) [GET /event, Accept: text/*, text/plain, text/plain;format=flowed, */*]
+- 구체적인 것이 우선
+-- 'Accept: text/*, text/plain, text/plain;format=flowed, */*'
+   - 1. text/plain;format=flowed
+   - 2. text/plain
+   - 3. text/*
+   - 4. */*
+
+* 협상과 우선순위3 (Quality Values(q))
+- 구체저거인 것을 기준으로 미디어 타입을 맞춤
+-- 'Accept: text/*;q=0.3, text/html;q=0.7, text/html;level=1,text/html;level=2;q=0.4, */*;q=0.5
 
 
 # 04. 전송 방식
+
+* 전송 방식 설명
+1) 단순 전송 (Content-Length)
+- 메시지 바디에 대한 Content-Length를 지정, Content-Length를 알때 사용
+- 한번에 요청하고 한번에 받는것
+
+2) 압축 전송 (Content-Encoding)
+- gzip 같은 압축을 사용 (Content-Encoding을 헤더에 추가해야 함)
+
+3) 분할 전송 (Transfer-Encoding)
+- chunked(덩어리) 를 쪼개서 보냄 (헤더에 Transfer-Encoding: chunked 추가)
+- 5바이트를 먼저 보내고, 클라이언트에서 받고 / 5바이트를 보내고, 클라이언트에 받고 / 마지막에는 0이라고 표시하고 \r\n으로 보냄
+- Content-Length를 넣으면 안됨 (분할해서 보낼때 길이를 같이 보내기 때문)
+
+4) 범위 전송 (Range, content-Range)
+- 이미지를 받는데 중간에 절반정도 받고, 끊길경우 끊긴 부분부터 다시 받을 수 있음 (범위)
+
 
 # 05. 일반 정보
 
