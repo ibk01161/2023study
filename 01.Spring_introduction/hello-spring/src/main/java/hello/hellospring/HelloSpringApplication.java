@@ -9,7 +9,7 @@ public class HelloSpringApplication {
 	public static void main(String[] args) {
 		System.out.print("구동시작");
 		SpringApplication.run(HelloSpringApplication.class, args);
-		System.out.print("구동완료1");
+		System.out.print("구동완료 - test");
 	}
 
 }
