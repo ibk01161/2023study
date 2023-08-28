@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 public class MemberService {
 
     // 회원 repository
@@ -16,7 +15,7 @@ public class MemberService {
     // 2023.08.26, 3-5 MemberServiceTest와 같은 Repository를 쓰도록 수정
     private final MemberRepository memberRepository;
 
-    // MemberService에 memberRepository를 외부에서 넣어주도록 변경 
+    // MemberService에 memberRepository를 외부에서 넣어주도록 변경 (생성자 주입)
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
