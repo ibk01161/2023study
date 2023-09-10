@@ -1,6 +1,6 @@
 package hello.hellospring;
 
-import hello.hellospring.repository.JdbcMemberRepository;
+import hello.hellospring.repository.JdbctemplateMemberRepository;
 import hello.hellospring.repository.MemberRepository;
 import hello.hellospring.service.MemberService;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +28,9 @@ public class SpringConfig {
     public MemberRepository memberRepository() {
         //return new MemoryMemberRepository();
         // 2023.09.05, 6-2 JdbcMemberRepository를 스프링 빈으로 등록하게 변경
-        return new JdbcMemberRepository(dataSource);
+        //return new JdbcMemberRepository(dataSource);
+        // 2023.09.11, 6-4 JdbcTemplate을 스프링 빈으로 등록하게 변경
+        return new JdbctemplateMemberRepository(dataSource);
     }
 
 }
