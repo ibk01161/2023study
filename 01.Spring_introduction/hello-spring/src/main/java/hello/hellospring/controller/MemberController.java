@@ -25,6 +25,8 @@ public class MemberController {
     @Autowired
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
+        // 실제 프록시가 주입되는지 확인 (AOP)
+        System.out.println("memberService = " + memberService.getClass());
     }
 
     // 필드 주입 (예전에는 많이 사용했었지만 추천 하지 않음)
