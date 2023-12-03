@@ -17,6 +17,8 @@ class MemoryMemberRepositoryTest {
         repository.clearStore();
     }
 
+    // commit test
+
     @Test
     public void save() {
         Member member = new Member();
