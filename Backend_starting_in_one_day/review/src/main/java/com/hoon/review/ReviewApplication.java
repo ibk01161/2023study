@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ReviewApplication {
 
 	public static void main(String[] args) {
-		// main test
 		SpringApplication.run(ReviewApplication.class, args);
 	}
 
