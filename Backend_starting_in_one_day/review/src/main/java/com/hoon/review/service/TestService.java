@@ -5,6 +5,8 @@ import com.hoon.review.repository.TestRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class TestService {
@@ -28,5 +30,14 @@ public class TestService {
         TestEntity testEntity = testRepository.findById(id).get();
         testRepository.delete(testEntity);
     }
+
+    public List<TestEntity> findAllByNameByJPA(String name) {
+        return testRepository.findAllByName(name);
+    }
+
+    public List<TestEntity> findAllByNameByQueryDsl(String name) {
+        return testRepository.findAllByNameByQueryDsl(name);
+    }
+
 
 }
