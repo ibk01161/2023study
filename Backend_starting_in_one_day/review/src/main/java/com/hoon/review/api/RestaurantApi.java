@@ -1,10 +1,16 @@
 package com.hoon.review.api;
 
 import com.hoon.review.api.request.CreateAndEditRestaurantRequest;
+import com.hoon.review.model.RestaurantEntity;
+import com.hoon.review.service.RestaurantService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+@RequiredArgsConstructor
 @RestController
 public class RestaurantApi {
+
+    private final RestaurantService restaurantService;
 
     // 1. API path 생성
     // 2. 맛집 생성, 맛집 수정에 request body가 있음 => request 정의
@@ -29,8 +35,8 @@ public class RestaurantApi {
      * 맛집 생성 API
      */
     @PostMapping("/restaurant")
-    public String createRestaurant(@RequestBody CreateAndEditRestaurantRequest request) {
-        return "This is createRestaurant, name = " + request.getName() + "address=" + request.getAddress() + ", menu[0].name=" + request.getMenus().get(0).getName() + ", menu[0].price=" + request.getMenus().get(0).getPrice();
+    public RestaurantEntity createRestaurant(@RequestBody CreateAndEditRestaurantRequest request) {
+        return restaurantService.createRestaurant(request);
     }
 
     /*
