@@ -1,7 +1,6 @@
 package com.hoon.review.api;
 
 import com.hoon.review.api.request.CreateAndEditRestaurantRequest;
-import com.hoon.review.model.RestaurantEntity;
 import com.hoon.review.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -35,24 +34,24 @@ public class RestaurantApi {
      * 맛집 생성 API
      */
     @PostMapping("/restaurant")
-    public RestaurantEntity createRestaurant(@RequestBody CreateAndEditRestaurantRequest request) {
-        return restaurantService.createRestaurant(request);
+    public void createRestaurant(@RequestBody CreateAndEditRestaurantRequest request) {
+        restaurantService.createRestaurant(request);
     }
 
     /*
      * 맛집 수정 API
      */
     @PutMapping("/restaurant/{restaurantId}")
-    public String editRestaurant(@PathVariable Long restaurantId, @RequestBody CreateAndEditRestaurantRequest request) {
-        return "This is editRestaurant, " + restaurantId + "name = " + request.getName() + "address=" + request.getAddress();
+    public void editRestaurant(@PathVariable Long restaurantId, @RequestBody CreateAndEditRestaurantRequest request) {
+        restaurantService.editRestaurant(restaurantId, request);
     }
 
     /*
      * 맛집 삭제 API
      */
     @DeleteMapping("/restaurant/{restaurantId}")
-    public String deleteRestaurant(@PathVariable Long restaurantId) {
-        return "This is deleteRestaurant, " + restaurantId;
+    public void deleteRestaurant(@PathVariable Long restaurantId) {
+        restaurantService.deleteRestaurant(restaurantId);
     }
 
 }
