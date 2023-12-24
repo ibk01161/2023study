@@ -1,9 +1,13 @@
 package com.hoon.review.api;
 
 import com.hoon.review.api.request.CreateAndEditRestaurantRequest;
+import com.hoon.review.api.response.RestaurantDetailView;
+import com.hoon.review.api.response.RestaurantView;
 import com.hoon.review.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -18,16 +22,45 @@ public class RestaurantApi {
      * 맛집 리스트 가져오기 API
      */
     @GetMapping("/restaurants")
-    public String getRestaurants() {
-        return "This is getRestaurants";
+    public List<RestaurantView> getRestaurants() {
+        // 테스트
+        /*
+        return List.of(RestaurantView.builder()
+                .id(0L)
+                .name("test name")
+                .address("test addreses")
+                .createAt(ZonedDateTime.now())
+                .updateAt(ZonedDateTime.now())
+                .build());
+         */
+        return restaurantService.getAllRestaurants();
     }
 
     /*
      * 맛집 정보 가져오기 API
      */
     @GetMapping("/restaurant/{restaurantId}")
-    public String getRestaurant(@PathVariable Long restaurantId) {
-        return "This is getRestaurant, " + restaurantId;
+    public RestaurantDetailView getRestaurant(@PathVariable Long restaurantId) {
+        // 테스트
+        /*
+        return RestaurantDetailView.builder()
+                .id(0L)
+                .name("test name")
+                .address("test addreses")
+                .createAt(ZonedDateTime.now())
+                .updateAt(ZonedDateTime.now())
+                .menus(List.of(
+                        RestaurantDetailView.Menu.builder()
+                                .id(0L)
+                                .name("test menu name")
+                                .price(500)
+                                .createAt(ZonedDateTime.now())
+                                .updateAt(ZonedDateTime.now())
+                                .build()
+                ))
+                .build();
+         */
+        return restaurantService.getRestaurantDetail(restaurantId);
     }
 
     /*

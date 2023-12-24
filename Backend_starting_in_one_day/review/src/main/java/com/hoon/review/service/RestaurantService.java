@@ -1,6 +1,8 @@
 package com.hoon.review.service;
 
 import com.hoon.review.api.request.CreateAndEditRestaurantRequest;
+import com.hoon.review.api.response.RestaurantDetailView;
+import com.hoon.review.api.response.RestaurantView;
 import com.hoon.review.model.MenuEntity;
 import com.hoon.review.model.RestaurantEntity;
 import com.hoon.review.repository.MenuRepository;
@@ -84,5 +86,50 @@ public class RestaurantService {
         // 맛집과 연결된 메뉴들도 삭제
         List<MenuEntity> menus = menuRepository.findAllByRestaurantId(restaurantId);
         menuRepository.deleteAll(menus);
+    }
+    
+    // 맛집 리스트 가져오기
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    public List<RestaurantView> getAllRestaurants() {
+        List<RestaurantEntity> restaurants = restaurantRepository.findAll();
+
+        // RestaurantView로 리턴해줘야 함
+        return restaurants.stream().map((restaurant) -> RestaurantView.builder()
+                .id(restaurant.getId())
+                .name(restaurant.getName())
+                .address(restaurant.getAddress())
+                .createAt(restaurant.getCreateAt())
+                .updateAt(restaurant.getUpdateAt())
+                .build()
+        ).toList();
+        
+        // 읽기만하는 메소드(select)에서는 Transactional을 붙히지 않아도 됨 or readOnly 설정
+    }
+
+    // 맛집 정보 가져오기
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    public RestaurantDetailView getRestaurantDetail(Long restaurnatId) {
+        // DB에서 맛집 조회
+        RestaurantEntity restaurant = restaurantRepository.findById(restaurnatId).orElseThrow();
+        
+        // DB에서 메뉴 조회
+        List<MenuEntity> menus = menuRepository.findAllByRestaurantId(restaurnatId);
+
+        return RestaurantDetailView.builder()
+                .id(restaurant.getId())
+                .name(restaurant.getName())
+                .address(restaurant.getAddress())
+                .createAt(restaurant.getCreateAt())
+                .updateAt(restaurant.getUpdateAt())
+                .menus(
+                        menus.stream().map((menu) -> RestaurantDetailView.Menu.builder()
+                                .id(menu.getId())
+                                .name(menu.getName())
+                                .price(menu.getPrice())
+                                .createAt(menu.getCreateAt())
+                                .updateAt(menu.getUpdateAt())
+                                .build()
+                        ).toList()
+                ).build();
     }
 }
