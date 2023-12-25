@@ -3,7 +3,10 @@ package com.hoon.review.service;
 import com.hoon.review.model.ReviewEntity;
 import com.hoon.review.repository.RestaurantRepository;
 import com.hoon.review.repository.ReviewRepository;
+import com.hoon.review.service.dto.ReviewDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,5 +43,22 @@ public class ReviewService {
     public void deleteReview(Long reviewId) {
         ReviewEntity review = reviewRepository.findById(reviewId).orElseThrow();
         reviewRepository.delete(review);
+    }
+
+    // 맛집에 등록된 리뷰 가져오기 API
+    public ReviewDto getRestaurantReview(Long restaurantId, Pageable page) {
+        Double avgScore = reviewRepository.getAvgScoreByRestaurantId(restaurantId);
+        Slice<ReviewEntity> reviews = reviewRepository.findSliceByRestaurantId(restaurantId, page);
+
+        return ReviewDto.builder()
+                .avgScore(avgScore)
+                .reviews(reviews.getContent())
+                .page(
+                        ReviewDto.ReviewDtoPage.builder()
+                                .offset(page.getPageNumber() * page.getPageSize())
+                                .limit(page.getPageSize())
+                                .build()
+                )
+                .build();
     }
 }
